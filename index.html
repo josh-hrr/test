@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <style>
+         *{
+             box-sizing: border-box;
+         }
+         body{
+             font-family: Arial, Helvetica, sans-serif;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+         }
+         section{
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+         }
+         .main__square {
+             margin: 2em 0;
+         }
+         .form{ 
+             display: grid; 
+             align-items: center;
+             grid-template-areas:   "title option"
+                                    "title option"
+                                    "title option"
+                                    "title option"; 
+         }
+         .form select option{   
+             text-align: center; 
+         }
+         #btn{
+             margin: 0 auto; 
+         }
+         #btn2{
+            margin: 0 auto;
+         }
+         table{ 
+            border-spacing: 5px;
+            border-collapse: collapse;
+            box-shadow: rgba(0, 0, 0, 0.10) 0px 5px 15px;
+         }
+         table thead{
+            background-color: rgb(188, 255, 188); 
+            
+         }
+         table thead tr th{
+             
+             border: 1px solid black; 
+             font-weight: bold;
+             padding: 1em;
+         }
+         table tbody tr td{ 
+             border: 1px solid black;
+             padding: 1em;
+         }
+         tr:nth-child(even){
+             background-color: rgb(228, 250, 215);
+         }
+     </style>
+    <title>Program Prototype</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <header class="header"></header> 
+        <main class="main">
+            <section class="main__square">
+                <h1>Generate File</h1>
+                <form class="form" action="">
+                    
+                    <p>Select currency: </p>
+                    <select name="currency" id="currencyType">
+                        <option value="$" type="dropdown">$</option> 
+                        <option value="R$" type="dropdown">R$</option> 
+                        <option value="Q." type="dropdown">Q.</option> 
+                    </select>
+
+                    <label for="price">Add price: </label>
+                    <input id="price" type="text" placeholder="add new price">
+
+                    <p>Select greeting: </p>
+                    <select name="greeting" id="greetingType">  
+                        <option value="morning" type="dropdown">morning</option> 
+                        <option value="afternoon" type="dropdown">afternoon</option> 
+                        <option value="evening" type="dropdown">evening</option> 
+                    </select>
+                    <p>Select mood: </p>
+                    <select name="mood" id="moodType">  
+                        <option value="happy" type="dropdown">Happy</option> 
+                        <option value="laughing" type="dropdown">Laughing</option>  
+                    </select> 
+
+                    <input id="btn" type="button" value="Update" >
+                    <input id="btn2" type="button" value="Generate Excel" onclick="exportTableToExcel('tblData', 'members-data')">
+                </form>
+            </section>
+            <section>
+            </section>
+            <section>
+                <table class="example-table" id="tblData">
+                    <thead class="table-header">
+                        <tr>
+                            <th>Text</th>
+                            <th>Price</th>
+                            <th>Schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p class="default-text"></p> 
+                            </td>
+                            <td>
+                                <p class="default-text__price"></p>
+                            </td>
+                            <td>
+                                <p class="default-text__schedule"></p>
+                            </td>
+                        </tr>
+
+                        <!-- 
+                        <tr>
+                            <td>Garrett Winters</td>
+                            <td>Accountant</td>
+                            <td>$170,750</td>
+                        </tr>
+                        <tr>
+                            <td>Brielle Williams</td>
+                            <td>Integration Specialist</td>
+                            <td>$372,000</td>
+                        </tr>
+                        -->
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <p class="full-text">
+
+                </p>
+            </section>
+        </main>
+    </div> 
+</body>
+<script> 
+    let defText = document.querySelector(".default-text"); 
+    let defTextPrice = document.querySelector(".default-text__price");
+    let defTextSchedule = document.querySelector(".default-text__schedule");    
+    let dropdownGroup = document.getElementById("currencyType");
+
+    //greetingType
+    let greetingGroup = document.getElementById("greetingType");
+    
+    //moodType
+    let moodGroup = document.getElementById("moodType");
+
+    //addPrice
+    let price = document.getElementById("price"); 
+
+    let btn = document.getElementById("btn");
+    let btn2 = document.getElementById("btn2");
+
+    let fullText = document.querySelector(".full-text"); 
+      
+    let currency = "";
+    let textGenerated = ""; 
+    let newSchedule = ""; 
+
+    //greetings
+    let newGreeting = "";
+    //mood
+    let newMood = "";
+
+    btn.addEventListener("click", change); 
+    function change(){   
+    let selectedValue = dropdownGroup.options[dropdownGroup.selectedIndex].value; 
+    let selectedValueGreeting = greetingGroup.options[greetingGroup.selectedIndex].value;
+    let selectedValueMood = moodGroup.options[moodGroup.selectedIndex].value;  
+    
+    let newPrice = price.value;  
+
+    switch(selectedValueMood){
+        case "happy": 
+            newMood = "😀😀"; 
+            break;
+        case "laughing": 
+            newMood = "😂🤣";
+            break; 
+        }
+
+    switch(selectedValueGreeting){
+        case "morning": 
+            newGreeting = "morning"; 
+            break;
+        case "afternoon": 
+            newGreeting = "afternoon";
+            break;
+        case "evening": 
+            newGreeting = "evening";
+            break;
+        }     
+
+    switch(selectedValue){
+        case "$":
+            newSchedule = "From 7am to 8am";
+            currency = "$"; 
+            break;
+        case "R$":
+            newSchedule = "From 10am to 11am";
+            currency = "R$";
+            break;
+        case "Q.":
+            newSchedule = "From 6pm to 8pm";
+            currency = "Q.";
+            break;
+        } 
+    defText.textContent =  (`The monthly payment will be: `); 
+    defTextPrice.textContent = (`${currency} ${newPrice}`);
+    defTextSchedule.textContent = (`${newSchedule}`);
+    
+    fullText.textContent = (`Hi, good ${newGreeting} everyone! The monthly payment will be: ${currency} ${newPrice} ${newSchedule} ${newMood}`); 
+
+    } 
+     
+    //export file to Excel
+    function exportTableToExcel(tableID, filename = ''){
+        let downloadLink;
+        let dataType = 'application/vnd.ms-excel';
+        let tableSelect = document.getElementById(tableID);
+        let tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+        //specify file name
+        filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+        //Create Download link element
+        downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+/*
+        if(navigator.msSaveOrOpenBlob){
+            let blob = new Blob(['\ufeff', tableHTML], {type: dataType});
+            navigator.msSaveOrOpenBlob(blob, filename);
+        }else {
+*/
+        //Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+        //setting the file name
+        downloadLink.download = filename;
+
+        //Trigger the function
+        downloadLink.click();
+        }
+        /*
+    }   
+        */
+
+        
+
+</script>
+</html>
